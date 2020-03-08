@@ -5,11 +5,12 @@ import Nav from 'react-bootstrap/Nav';
 
 const Header = () => {
     var signedin = localStorage.getItem('signedin');
+    var websiteName = "Some bank website?"
 
     if(signedin){
         return (
             <Navbar bg="light" expand="lg">
-                <Navbar.Brand href="/">Southern Sierra Wildflower Club</Navbar.Brand>
+                <Navbar.Brand href="/">{websiteName}</Navbar.Brand>
                 <Navbar.Toggle aria-controls="basic-navbar-nav" />
                 <Navbar.Collapse id="basic-navbar-nav">
                     <Nav className="mr-auto">
@@ -29,7 +30,7 @@ const Header = () => {
     else{
         return (
             <Navbar bg="light" expand="lg">
-                <Navbar.Brand href="/listflowers">Southern Sierra Wildflower Club</Navbar.Brand>
+                <Navbar.Brand href="/listflowers">{websiteName}</Navbar.Brand>
             </Navbar>
         );
     }

@@ -7,9 +7,9 @@ const FooterPage = () => {
       <MDBContainer fluid className="text-center text-md-center">
         <MDBRow>
           <MDBCol>
-            <h5 className="title">CIS4301 Assignment 5</h5>
+            <h5 className="title">Software Security P1</h5>
             <div>
-              Mustafa Mohamed and Pedro Sicilia
+              Mustafa Mohamed, Pedro Sicilia, Kevin Thomas, Nicholas Tateo
             </div>
             <br/>
           </MDBCol>
@@ -17,7 +17,7 @@ const FooterPage = () => {
       </MDBContainer>
       <div className="footer-copyright text-center py-3">
         <MDBContainer fluid>
-            Southern Sierra Wildflower Club
+            Website name
         </MDBContainer>
       </div>
     </MDBFooter>
