@@ -1,31 +1,39 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 import './Header.css';
+import Navbar from 'react-bootstrap/Navbar';
+import Nav from 'react-bootstrap/Nav';
 
 const Header = () => {
-    return (
-        <div className='topnav'>
-            {/* Logo */}
-            <Link id="logo-link" to="/">
-                <img className="topnav-logo" src={ "/logo192.png" } alt="React logo" />
-            </Link>
+    var signedin = localStorage.getItem('signedin');
 
-            {/* Page Links */}
-            <div className="topnav-right">
-                <Link className="topnav-link" to='/Register'>Sign in</Link>
-                <Link className="topnav-link" to='/projects'>Projects</Link>
-                <a className="topnav-link" target='_blank' rel="noopener noreferrer" href="https://www.facebook.com/groups/ufosc/events/?source=4&action_history=null&filter=calendar">
-                    Events
-                    <i className="fas fa-external-link-alt external-link" data-fa-transform="up-6"></i>
-                </a>
-                <a className="topnav-link" target='_blank' rel="noopener noreferrer" href="https://github.com/ufosc/club-resources">
-                    Resources
-                    <i className="fas fa-external-link-alt external-link" data-fa-transform="up-6 right-4"></i>
-                </a>
-                <Link className="topnav-link" to="/about">About</Link>
-            </div>
-        </div>
-    )
+    if(signedin){
+        return (
+            <Navbar bg="light" expand="lg">
+                <Navbar.Brand href="/">Southern Sierra Wildflower Club</Navbar.Brand>
+                <Navbar.Toggle aria-controls="basic-navbar-nav" />
+                <Navbar.Collapse id="basic-navbar-nav">
+                    <Nav className="mr-auto">
+                    <Nav.Link href="/listflowers">List Flowers</Nav.Link>
+                    <Nav.Link href="/newsighting">New Sighting</Nav.Link>
+                    <Nav.Link href="/performance">Performance Test</Nav.Link>
+                    </Nav>
+                </Navbar.Collapse>
+                <Navbar.Collapse className="justify-content-end">
+                    <Navbar.Text>
+                        Signed in as: <a href="/signout">Admin</a>
+                    </Navbar.Text>
+                </Navbar.Collapse>
+            </Navbar>
+        );
+    }
+    else{
+        return (
+            <Navbar bg="light" expand="lg">
+                <Navbar.Brand href="/listflowers">Southern Sierra Wildflower Club</Navbar.Brand>
+            </Navbar>
+        );
+    }
+
 }
 
 export default Header;
