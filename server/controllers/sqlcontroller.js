@@ -1,5 +1,19 @@
 const sqlite3 = require('sqlite3').verbose();
 
+exports.getUsers = (req,res) => {
+    const db = new sqlite3.Database(__dirname + '/users.db');
+    db.all('SELECT * FROM USERS', (err, rows) => {
+        if(!err){
+            res.status(200).send(rows);
+        }
+        else{
+            res.sendStatus(404);
+        }
+    });
+}
+
+//exports.newUser
+
 exports.getFlowers = (req, res) => {
     const db = new sqlite3.Database(__dirname + '/flowers2019.db');
     db.all('SELECT * FROM FLOWERS', (err, rows) => {

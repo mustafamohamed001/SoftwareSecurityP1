@@ -17,6 +17,8 @@
   "author": "Mustafa Mohamed",
   "license": "MIT",
   "dependencies": {
+    "bcrypt-nodejs": "0.0.3",
+    "bcryptjs": "^2.4.3",
     "body-parser": "^1.19.0",
     "concurrently": "^4.1.0",
     "cors": "^2.8.5",
@@ -26,6 +28,9 @@
     "mongoose": "^5.7.1",
     "morgan": "^1.9.1",
     "nodemon": "^1.18.10",
+    "passport": "^0.4.1",
+    "passport-jwt": "^4.0.0",
+    "passport-local": "^1.0.0",
     "should": "^13.2.3",
     "sqlite3": "^4.1.1",
     "supertest": "^4.0.2"
