@@ -34,43 +34,15 @@ class Dashboard extends Component {
 
     render(){
         return (
-            <MDBContainer>
-                <MDBRow>
-                    <MDBCol md="6">
-                    <form autoComplete="off">
-                        <br/>
-                        <p className="h4 text-center mb-4">Sign in</p>
-                            <label htmlFor="defaultFormLoginEmailEx" className="grey-text">
-                                Username
-                            </label>
-                        <input
-                            type="text"
-                            name="username"
-                            id="standard-required"
-                            className="form-control"
-                            onChange={this.handleInputChange}
-                            value={this.state.username}
-                        />
-                        <br />
-                        <label htmlFor="defaultFormLoginPasswordEx" className="grey-text">
-                        Password
-                        </label>
-                        <input
-                            label="Password"
-                            type="password"
-                            id="standard-required"
-                            name="password"
-                            className="form-control"
-                            onChange={this.handleInputChange}
-                            value={this.state.password}
-                        />
-                        <div className="text-center mt-4">
-                            <button color="indigo" type="submit" onClick={this.handleSubmit}>Login</button>
-                        </div>
-                    </form>
-                    </MDBCol>
-                </MDBRow>
-            </MDBContainer>
+            <div style={{minHeight: 750}}>
+                <MDBContainer>
+                    <MDBRow>
+                        <MDBCol md="6">
+
+                        </MDBCol>
+                    </MDBRow>
+                </MDBContainer>
+            </div>
         );
     }
     

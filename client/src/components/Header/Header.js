@@ -30,8 +30,16 @@ const Header = () => {
     else{
         return (
             <Navbar bg="light" expand="lg">
-                <Navbar.Brand href="/listflowers">{websiteName}</Navbar.Brand>
-            </Navbar>
+            <Navbar.Brand href="/">{websiteName}</Navbar.Brand>
+            <Navbar.Toggle aria-controls="basic-navbar-nav" />
+            <Navbar.Collapse id="basic-navbar-nav">
+            </Navbar.Collapse>
+            <Navbar.Collapse className="justify-content-end">
+                <Navbar.Text>
+                    <a href="/register">Register</a> | <a href="/login">Login</a>
+                </Navbar.Text>
+            </Navbar.Collapse>
+        </Navbar>
         );
     }
 
