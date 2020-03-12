@@ -3,6 +3,12 @@ const sqlitecontroller = require('../controllers/sqlcontroller.js');
     router = express.Router()
 
     router.route('/getusers').get(sqlitecontroller.getUsers);
+
+    router.route('/getFlowers').post(sqlitecontroller.getFlowers);
+    router.route('/getSightings').post(sqlitecontroller.getSightings);
+    router.route('/flowersUpdate').post(sqlitecontroller.flowersUpdate);
+    router.route('/sightingsInsert').post(sqlitecontroller.sightingsInsert);
+    router.route('/flowersDelete').post(sqlitecontroller.flowersDelete);
     router.route('/performance').get(sqlitecontroller.performance); 
   
 module.exports = router;

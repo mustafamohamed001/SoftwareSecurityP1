@@ -12,8 +12,6 @@ exports.getUsers = (req,res) => {
     });
 }
 
-//exports.newUser
-
 exports.getFlowers = (req, res) => {
     const db = new sqlite3.Database(__dirname + '/flowers2019.db');
     db.all('SELECT * FROM FLOWERS', (err, rows) => {

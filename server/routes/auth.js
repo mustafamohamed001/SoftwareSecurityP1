@@ -13,7 +13,10 @@ router.post('/register', function(req, res) {
     } else {
       var newUser = new User({
         username: req.body.username,
-        password: req.body.password
+        password: req.body.password,
+        email: req.body.email,
+        amount: 0
+
       });
       // save the user
       newUser.save(function(err) {
