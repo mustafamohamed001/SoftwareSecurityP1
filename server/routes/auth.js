@@ -24,6 +24,7 @@ router.post('/register', function(req, res) {
           return res.json({success: false, msg: 'Username already exists.'});
         }
         res.json({success: true, msg: 'Successful created new user.'});
+        res.status(200);
       });
     }
   });
