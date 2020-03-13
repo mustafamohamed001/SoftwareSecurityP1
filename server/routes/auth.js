@@ -20,11 +20,13 @@ router.post('/register', function(req, res) {
       });
       // save the user
       newUser.save(function(err) {
-        if (err) {
-          return res.json({success: false, msg: 'Username already exists.'});
+        
+        if (err != '0a0a') {
+          return res.status(400).json({success: false, msg: 'Username already exists.'});
         }
-        res.json({success: true, msg: 'Successful created new user.'});
-        res.status(200);
+        else{
+          res.status(200).json({success: true, msg: 'Successful created new user.'});
+        }
       });
     }
   });

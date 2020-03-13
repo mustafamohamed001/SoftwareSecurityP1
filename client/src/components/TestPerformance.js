@@ -1,9 +1,7 @@
 import React, { Component } from 'react';
-import { Redirect } from 'react-router-dom';
 import Card from 'react-bootstrap/Card'
 import Button from 'react-bootstrap/Button'
 import Container from 'react-bootstrap/Container'
-import Row from 'react-bootstrap/Row'
 import axios from 'axios';
 
 class TestPerformance extends Component {

@@ -5,9 +5,7 @@ import Card from 'react-bootstrap/Card'
 import Button from 'react-bootstrap/Button'
 import Container from 'react-bootstrap/Container'
 import Row from 'react-bootstrap/Row'
-import Col from 'react-bootstrap/Col'
 import { MDBInput } from "mdbreact";
-import Dropdown from "react-bootstrap/Dropdown"
 
 class NewSighting extends Component {
     constructor(){

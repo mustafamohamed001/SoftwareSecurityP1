@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
-import { Redirect } from 'react-router-dom';
 import './Home.css';
 import { MDBContainer, MDBRow, MDBCol } from 'mdbreact';
+import axios from 'axios';
+import { Link, withRouter } from "react-router-dom";
 
 class Register extends Component {
     constructor(){
@@ -10,8 +11,9 @@ class Register extends Component {
         this.handleInputChange = this.handleInputChange.bind(this);
         this.state = {
             username: '',
+            emailaddress: '',
             password: '',
-           // retypepassword: ''
+            retypepassword: ''
         }
     }
 
@@ -27,15 +29,37 @@ class Register extends Component {
     }
 
     handleSubmit(e){
-        if(this.state.username === "admin" && this.state.password === "password"){
-            localStorage.setItem('signedin', true);
+        if(this.state.password !== this.state.retypepassword){
+            alert("Password does not match");
             e.preventDefault()
-		    this.props.history.push('/Login');
+        }
+        var regex = /^[a-zA-Z0-9]+@[a-zA-Z0-9]+\.[A-Za-z]+$/
+        if (!(regex.test(this.state.emailaddress))){
+            alert("Email address is incorrect");
+            e.preventDefault()
+        }
+        else{
+            axios.post('/auth/register', { 
+                "username" : this.state.username,
+                "email" : this.state.emailaddress, 
+                "password" : this.state.password,
+            })
+            .then((result) => {
+                this.props.history.push("/login");
+            })
+            .catch((error) => {
+              if(error.response.status === 400) {
+                alert("Username taken");
+              }
+              
+            });
+            e.preventDefault();
         }
     }
 
     render(){
         return (
+            <div style={{minHeight: 725}}>
             <MDBContainer>
                 <MDBRow>
                     <MDBCol md="6">
@@ -52,6 +76,18 @@ class Register extends Component {
                             className="form-control"
                             onChange={this.handleInputChange}
                             value={this.state.username}
+                        />
+                        <br/>
+                            <label htmlFor="defaultFormLoginPasswordEx" className="grey-text">
+                                Email Address
+                            </label>
+                        <input
+                            type="text"
+                            id="standard-required"
+                            name="emailaddress"
+                            className="form-control"
+                            onChange={this.handleInputChange}
+                            value={this.state.emailaddress}
                         />
                         <br />
                             <label htmlFor="defaultFormLoginPasswordEx" className="grey-text">
@@ -74,16 +110,11 @@ class Register extends Component {
                             label="Password"
                             type="password"
                             id="standard-required"
-                            name="password"
+                            name="retypepassword"
                             className="form-control"
                             onChange={this.handleInputChange}
-                            value={this.state.password}
+                            value={this.state.retypepassword}
                         />
-
-
-
-
-
 
                         <div className="text-center mt-4">
                             <button color="indigo" type="submit" onClick={this.handleSubmit}>Register</button>
@@ -92,6 +123,7 @@ class Register extends Component {
                     </MDBCol>
                 </MDBRow>
             </MDBContainer>
+            </div>
         );
     }
     
