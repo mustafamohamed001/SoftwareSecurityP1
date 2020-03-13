@@ -6,6 +6,7 @@ var express = require('express');
 var jwt = require('jsonwebtoken');
 var router = express.Router();
 var User = require('../models/Users');
+const sqlite3 = require('sqlite3').verbose();
 
 router.post('/register', function(req, res) {
     if (!req.body.username || !req.body.password) {
@@ -32,13 +33,28 @@ router.post('/register', function(req, res) {
   });
 
 router.post('/login', function(req, res) {
-    User.findOne({
-      username: req.body.username
-    }, function(err, user) {
+  
+      var user = null;
+      var err = null;
+      const finduser = 'SELECT username FROM USERS WHERE username = \'' + req.body.username + '\'';
+      const sqllocation = __dirname.slice(0,__dirname.lastIndexOf('/')) + '/controllers/users.db'
+      const db = new sqlite3.Database(sqllocation);
+      db.all(finduser, (err, row) => {
+          if(!err){
+              user = row[0].username
+          }
+          else {
+              console.log(err);
+          }
+      });
+
+      console.log(user);
+      
+      
       if (err) throw err;
   
       if (!user) {
-        res.status(401).send({success: false, msg: 'Authentication failed. User not found.'});
+        res.status(400).send({success: false, msg: 'Authentication failed. User not found.'});
       } else {
         // check if password matches
         user.comparePassword(req.body.password, function (err, isMatch) {
@@ -48,11 +64,10 @@ router.post('/login', function(req, res) {
             // return the information including token as JSON
             res.json({success: true, token: 'JWT ' + token});
           } else {
-            res.status(401).send({success: false, msg: 'Authentication failed. Wrong password.'});
+            res.status(400).send({success: false, msg: 'Authentication failed. Wrong password.'});
           }
         });
       }
-    });
   });
 
   module.exports = router;

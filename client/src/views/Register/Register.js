@@ -31,11 +31,13 @@ class Register extends Component {
     handleSubmit(e){
         if(this.state.password !== this.state.retypepassword){
             alert("Password does not match");
+            window.history.pushState({}, document.title, "/" + "register");
             e.preventDefault()
         }
         var regex = /^[a-zA-Z0-9]+@[a-zA-Z0-9]+\.[A-Za-z]+$/
         if (!(regex.test(this.state.emailaddress))){
             alert("Email address is incorrect");
+            window.history.pushState({}, document.title, "/" + "register");
             e.preventDefault()
         }
         else{

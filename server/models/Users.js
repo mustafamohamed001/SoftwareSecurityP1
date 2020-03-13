@@ -48,6 +48,24 @@ UserSchema.pre('save', function (next) {
     }
 });
 
+UserSchema.pre('findUser', function (err, user) {
+    // const finduser = 'SELECT USER FROM USERS WHERE USER = \'' + user + '\'';
+    // const sqllocation = __dirname.slice(0,__dirname.lastIndexOf('/')) + '/controllers/users.db'
+    // const db = new sqlite3.Database(sqllocation);
+    // db.all(finduser, (err, row) => {
+    //     if(!err){
+    //         console.log(row);
+            
+    //         return (null, row)
+    //     }
+    //     else {
+    //         console.log(err);
+            
+    //         return (err, null)
+    //     }
+    // });
+});
+
 UserSchema.methods.comparePassword = function (passw, cb) {
     bcrypt.compare(passw, this.password, function (err, isMatch) {
         if (err) {
