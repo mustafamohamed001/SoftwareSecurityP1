@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { Redirect } from 'react-router-dom';
 import { MDBContainer, MDBRow, MDBCol } from 'mdbreact';
 
 class Dashboard extends Component {

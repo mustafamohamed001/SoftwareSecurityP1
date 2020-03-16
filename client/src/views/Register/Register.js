@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import './Home.css';
 import { MDBContainer, MDBRow, MDBCol } from 'mdbreact';
 import axios from 'axios';
-import { Link, withRouter } from "react-router-dom";
 
 class Register extends Component {
     constructor(){
@@ -31,13 +30,13 @@ class Register extends Component {
     handleSubmit(e){
         if(this.state.password !== this.state.retypepassword){
             alert("Password does not match");
-            window.history.pushState({}, document.title, "/" + "register");
+            window.history.pushState({}, document.title, "/register");
             e.preventDefault()
         }
         var regex = /^[a-zA-Z0-9]+@[a-zA-Z0-9]+\.[A-Za-z]+$/
         if (!(regex.test(this.state.emailaddress))){
             alert("Email address is incorrect");
-            window.history.pushState({}, document.title, "/" + "register");
+            window.history.pushState({}, document.title, "/register");
             e.preventDefault()
         }
         else{

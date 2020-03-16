@@ -15,6 +15,8 @@ import TestPerformance from "./components/TestPerformance"
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'mdbreact/dist/css/mdb.css';
 
+import PrivateRoute from './PrivateRoute'
+
 const App = () => {
   return (
     <div>
@@ -27,12 +29,12 @@ const App = () => {
         </Route>
         <Route exact path="/home" component={Home}/>
         <Route exact path="/signout" component={Signout} />
-        <Route exact path="/dashboard" component={Dashboard}/>
+        <PrivateRoute exact path="/dashboard" component={Dashboard}/>
         
-        <Route exact path="/listflowers" component={ViewFlowers} />
+        <PrivateRoute exact path="/listflowers" component={ViewFlowers} />
         <Route exact path="/signout" component={signout} />
-        <Route exact path="/newsighting" component={NewSighting}/>
-        <Route exact path="/performance" component={TestPerformance}/>
+        <PrivateRoute exact path="/newsighting" component={NewSighting}/>
+        <PrivateRoute exact path="/performance" component={TestPerformance}/>
 
         <Route component={NotFound}/>
       </Switch>

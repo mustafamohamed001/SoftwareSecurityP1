@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import './Home.css';
 import { MDBContainer, MDBRow, MDBCol } from 'mdbreact';
 import axios from 'axios';
-import { Link, withRouter } from "react-router-dom";
 
 class Login extends Component {
     constructor(){

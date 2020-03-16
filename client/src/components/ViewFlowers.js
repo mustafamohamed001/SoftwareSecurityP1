@@ -155,12 +155,10 @@ class Login extends Component {
     componentWillUnmount() { window.removeEventListener('load', this.handleLoad)}
 
     render(){
-        var signedin = localStorage.getItem('signedin');
         //if(this.state.loaded){
         if(true){
             const getsightings = (name) => {
                 var s = this.state.sightings
-                var s2 = []
                 s = s.sort((a, b) => new Date(b.SIGHTED.split('/').reverse()) - new Date(a.SIGHTED.split('/').reverse()));
                 var cnt = 0;
                 var sight2 = s.map((element, index) => {
@@ -178,7 +176,7 @@ class Login extends Component {
                             
                         );
                         
-                    }
+                    } 
                     else {
                         return <div></div>
                     }
