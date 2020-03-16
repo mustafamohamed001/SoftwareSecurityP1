@@ -1,12 +1,11 @@
 var mongoose = require('mongoose');
-var passport = require('passport');
 var settings = require('../config/config');
-require('../config/passport')(passport);
 var express = require('express');
 var jwt = require('jsonwebtoken');
 var router = express.Router();
 var User = require('../models/Users');
 const sqlite3 = require('sqlite3').verbose();
+var bcrypt = require('bcrypt-nodejs');
 
 router.post('/register', function(req, res) {
     if (!req.body.username || !req.body.password) {
@@ -33,41 +32,39 @@ router.post('/register', function(req, res) {
   });
 
 router.post('/login', function(req, res) {
-  
       var user = null;
       var err = null;
       const finduser = 'SELECT username FROM USERS WHERE username = \'' + req.body.username + '\'';
       const sqllocation = __dirname.slice(0,__dirname.lastIndexOf('/')) + '/controllers/users.db'
       const db = new sqlite3.Database(sqllocation);
-      db.all(finduser, (err, row) => {
+      db.all(finduser, (err, userrow) => {
           if(!err){
-              user = row[0].username
+            if (userrow.length == 0) {
+              res.status(400).send({success: false, msg: 'Authentication failed. User not found.'});
+            } 
+            else {
+              user = userrow[0].username;
+
+              // check if password matches
+              const findpass = 'SELECT password FROM USERS WHERE username = \'' + req.body.username + '\'';
+              db.all(findpass, (err, passrow) => {
+
+                if (passrow && !err) {
+                  // if user is found and password is right create a token
+                  var token = jwt.sign({username:user}, settings.secret, {expiresIn: '1h'});
+                  // return the information including token as JSON
+                  res.json({success: true, token: 'JWT ' + token});
+                } 
+                else {
+                  res.status(400).send({success: false, msg: 'Authentication failed. Wrong password.'});
+                }
+              });
+            }
           }
           else {
               console.log(err);
           }
       });
-
-      console.log(user);
-      
-      
-      if (err) throw err;
-  
-      if (!user) {
-        res.status(400).send({success: false, msg: 'Authentication failed. User not found.'});
-      } else {
-        // check if password matches
-        user.comparePassword(req.body.password, function (err, isMatch) {
-          if (isMatch && !err) {
-            // if user is found and password is right create a token
-            var token = jwt.sign(user.toJSON(), settings.secret);
-            // return the information including token as JSON
-            res.json({success: true, token: 'JWT ' + token});
-          } else {
-            res.status(400).send({success: false, msg: 'Authentication failed. Wrong password.'});
-          }
-        });
-      }
   });
 
   module.exports = router;
