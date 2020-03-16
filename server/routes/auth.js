@@ -13,6 +13,7 @@ router.post('/register', function(req, res) {
       var username = req.body.username;
       var password = req.body.password;
       var email = req.body.email;
+      password = password + settings.pepper;
       bcrypt.genSalt(10, function (err, salt) {
         if (err) {
           res.status(400).json({success: false, msg: 'Salt cannot generate'});
@@ -60,7 +61,7 @@ router.post('/login', function(req, res) {
           const findpass = 'SELECT password FROM USERS WHERE username = \'' + req.body.username + '\'';
           db.all(findpass, (err, passrow) => {
             if(!err){
-              bcrypt.compare(req.body.password, passrow[0].PASSWORD, function (err, isMatch) {
+              bcrypt.compare(req.body.password + settings.pepper, passrow[0].PASSWORD, function (err, isMatch) {
                 if (isMatch && !err) {
                   // if user is found and password is right create a token
                   var token = jwt.sign({username:user}, settings.secret, {expiresIn: '1h'});

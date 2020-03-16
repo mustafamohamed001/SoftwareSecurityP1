@@ -12,6 +12,7 @@ import ViewFlowers from "./components/ViewFlowers"
 import signout from "./components/signout"
 import NewSighting from "./components/NewSighting"
 import TestPerformance from "./components/TestPerformance"
+import Search from "./components/Search"
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'mdbreact/dist/css/mdb.css';
 
@@ -35,6 +36,7 @@ const App = () => {
         <Route exact path="/signout" component={signout} />
         <PrivateRoute exact path="/newsighting" component={NewSighting}/>
         <PrivateRoute exact path="/performance" component={TestPerformance}/>
+        <PrivateRoute exact path="/search" component={Search}/>
 
         <Route component={NotFound}/>
       </Switch>

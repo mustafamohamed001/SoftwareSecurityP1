@@ -2,5 +2,6 @@
 //'config.js' is usually ignored by git to protect sensitive information, such as your database's username and password
 
 module.exports = {
-  secret:'topsecurepasswordhash'
+  secret:'topsecurepasswordhash',
+  pepper:'esmuycaliente'
 };

@@ -39,7 +39,7 @@ class Dashboard extends Component {
                                     <Card.Img variant="top" src="/images/searchicon.png" />
                                     <Card.Body>
                                         <Card.Title>Search Flowers</Card.Title>
-                                        <Button variant="primary" onClick={e=>window.location = "/searchflowers"}>Search Flowers</Button>
+                                        <Button variant="primary" onClick={e=>window.location = "/search"}>Search Flowers</Button>
                                     </Card.Body>
                                 </Card>
                             </CardDeck>
