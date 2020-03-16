@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { Redirect } from 'react-router-dom';
 import axios from 'axios';
 import Card from 'react-bootstrap/Card'
 import Button from 'react-bootstrap/Button'
@@ -76,8 +75,7 @@ class NewSighting extends Component {
 
     render(){
 
-        var signedin = localStorage.getItem('signedin');
-        if(signedin){
+        if(true){
             return(
                 <div style={{minHeight: 585}}>
                     <Container>
@@ -105,13 +103,6 @@ class NewSighting extends Component {
                 </div>
                 
             );
-        }
-        else{
-            return(
-                <Redirect to={{
-                    pathname: '/login'
-                }}/>
-            )
         }
     }
 }

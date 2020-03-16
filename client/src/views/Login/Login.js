@@ -34,7 +34,7 @@ class Login extends Component {
             console.log(result);
             console.log(result.data.token);
             localStorage.setItem('Token', result.data.token);
-            window.location = "/listflowers"
+            window.location = "/dashboard"
         })
         .catch((error) => {
           if(error.response.status === 400) {
