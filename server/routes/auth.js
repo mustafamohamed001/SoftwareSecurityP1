@@ -25,7 +25,7 @@ router.post('/register', function(req, res) {
 
             //========= adding new user info to database ===================
                 const insertuser = 'INSERT INTO USERS (username, password, email, amount) VALUES (' + '\'' + username + '\'' + ', ' + '\'' + password + '\'' + ', ' + '\'' +  email + '\'' + ', ' + 0 + ')';
-                const sqllocation = __dirname.slice(0,__dirname.lastIndexOf('/')) + '/controllers/users.db'
+                const sqllocation = __dirname.slice(0,__dirname.lastIndexOf('/')) + '/controllers/database.db'
                 const db = new sqlite3.Database(sqllocation);
                 db.all(insertuser, (err, rows) => {
                     if (!err) {
@@ -46,8 +46,8 @@ router.post('/register', function(req, res) {
 router.post('/login', function(req, res) {
   var user = null;
   var err = null;
-  const finduser = 'SELECT username FROM USERS WHERE username = \'' + req.body.username + '\'';
-  const sqllocation = __dirname.slice(0,__dirname.lastIndexOf('/')) + '/controllers/users.db'
+  const finduser = 'SELECT USERNAME FROM USERS WHERE USERNAME = \'' + req.body.username + '\'';
+  const sqllocation = __dirname.slice(0,__dirname.lastIndexOf('/')) + '/controllers/database.db'
   const db = new sqlite3.Database(sqllocation);
   db.all(finduser, (err, userrow) => {
       if(!err){
@@ -55,13 +55,12 @@ router.post('/login', function(req, res) {
           res.status(400).send({success: false, msg: 'Authentication failed. User not found.'});
         } 
         else {
-          user = userrow[0].username;
-
+          user = userrow[0].USERNAME;
           // check if password matches
           const findpass = 'SELECT password FROM USERS WHERE username = \'' + req.body.username + '\'';
           db.all(findpass, (err, passrow) => {
             if(!err){
-              bcrypt.compare(req.body.password, passrow[0].password, function (err, isMatch) {
+              bcrypt.compare(req.body.password, passrow[0].PASSWORD, function (err, isMatch) {
                 if (isMatch && !err) {
                   // if user is found and password is right create a token
                   var token = jwt.sign({username:user}, settings.secret, {expiresIn: '1h'});

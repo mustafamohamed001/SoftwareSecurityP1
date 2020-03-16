@@ -33,7 +33,7 @@ class Register extends Component {
             window.history.pushState({}, document.title, "/register");
             e.preventDefault()
         }
-        var regex = /^[a-zA-Z0-9]+@[a-zA-Z0-9]+\.[A-Za-z]+$/
+        var regex = /^[a-zA-Z0-9.]+@[a-zA-Z0-9]+\.[A-Za-z]+$/
         if (!(regex.test(this.state.emailaddress))){
             alert("Email address is incorrect");
             window.history.pushState({}, document.title, "/register");

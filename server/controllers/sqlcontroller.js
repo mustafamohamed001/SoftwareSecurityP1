@@ -1,7 +1,7 @@
 const sqlite3 = require('sqlite3').verbose();
 
 exports.getUsers = (req,res) => {
-    const db = new sqlite3.Database(__dirname + '/users.db');
+    const db = new sqlite3.Database(__dirname + '/database.db');
     db.all('SELECT * FROM USERS', (err, rows) => {
         if(!err){
             res.status(200).send(rows);
@@ -13,7 +13,7 @@ exports.getUsers = (req,res) => {
 }
 
 exports.getFlowers = (req, res) => {
-    const db = new sqlite3.Database(__dirname + '/flowers2019.db');
+    const db = new sqlite3.Database(__dirname + '/database.db');
     db.all('SELECT * FROM FLOWERS', (err, rows) => {
         if (!err) {
             res.send(rows);
@@ -25,7 +25,7 @@ exports.getFlowers = (req, res) => {
 }
 
 exports.getSightings = (req, res) => {
-    const db = new sqlite3.Database(__dirname + '/flowers2019.db');
+    const db = new sqlite3.Database(__dirname + '/database.db');
     db.all('SELECT * FROM SIGHTINGS', (err, rows) => {
         if (!err) {
             res.send(rows);
@@ -46,7 +46,7 @@ exports.flowersUpdate = (req, res) => {
 
     //res.send(oldName);
 
-    const db = new sqlite3.Database(__dirname + '/flowers2019.db');
+    const db = new sqlite3.Database(__dirname + '/database.db');
     //name
     const SQLUpdateName = 'UPDATE FLOWERS SET COMNAME = ' + newName + ' WHERE FLOWERS.COMNAME = ' + oldName;
     const SQLUpdateSightings = 'UPDATE SIGHTINGS SET NAME = ' + newName + ' WHERE SIGHTINGS.NAME = ' + oldName;
@@ -94,7 +94,7 @@ exports.sightingsInsert = (req, res) => {
     const date = "'" + req.body.date + "'";
 
     const SQLInsertSighting = 'INSERT INTO SIGHTINGS (NAME, PERSON, LOCATION, SIGHTED) VALUES (' + name + ', ' + person + ', ' + location + ', ' + date + ')';
-    const db = new sqlite3.Database(__dirname + '/flowers2019.db');
+    const db = new sqlite3.Database(__dirname + '/database.db');
     db.all(SQLInsertSighting, (err, rows) => {
         if (!err) {
             console.log('Sighting has been inserted!')
@@ -112,7 +112,7 @@ exports.flowersDelete = (req, res) => {
     const species = "'" + req.body.species + "'";
 
     const SQLDeleteFlower = 'DELETE FROM FLOWERS WHERE COMNAME = ' + name + ' AND GENUS = ' + genus + ' AND SPECIES = ' + species;
-    const db = new sqlite3.Database(__dirname + '/flowers2019.db');
+    const db = new sqlite3.Database(__dirname + '/database.db');
     db.all(SQLDeleteFlower, (err, rows) => {
         if (!err) {
             console.log('Flower has been deleted!');
@@ -125,7 +125,7 @@ exports.flowersDelete = (req, res) => {
 } 
 
 exports.performance = (req, res) => {
-    const db = new sqlite3.Database(__dirname + '/flowers2019.db');
+    const db = new sqlite3.Database(__dirname + '/database.db');
     var preQuery = new Date().getTime();
     db.serialize(function(){
         db.each("SELECT * FROM flowers", function(err,row){
