@@ -84,4 +84,28 @@ router.post('/login', function(req, res) {
   });
 });
 
+router.post('/auth', function(req, res) {
+  var token = req.body.token;
+  if(token){
+    token = token.substring(4,token.length)
+    jwt.verify(token, settings.secret, function(err, decoded) {
+      if (err) {
+        /*
+          err = {
+            name: 'TokenExpiredError',
+            message: 'jwt expired',
+            expiredAt: 1408621000
+          }
+        */
+       console.log(err);
+       
+       res.status(400).send({success: false, msg: 'Authentication failed'});
+      }
+      else{
+        res.status(200).json({success: true, msg: 'Autheticated'});
+      }
+    });
+  }
+});
+
   module.exports = router;

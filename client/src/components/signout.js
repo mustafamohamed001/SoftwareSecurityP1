@@ -4,11 +4,13 @@ import { Redirect } from 'react-router-dom';
 class signout extends Component {
 
     render(){
-        localStorage.removeItem('signedin');
+        localStorage.removeItem('Token');
+
+        window.location = "/Home"
         return(
             <main>
                 <Redirect to={{
-                    pathname: '/listflowers'
+                    pathname: '/Home'
                 }}
                 />
             </main>

@@ -2,26 +2,41 @@ import React from 'react';
 import './Header.css';
 import Navbar from 'react-bootstrap/Navbar';
 import Nav from 'react-bootstrap/Nav';
+import jwt_decode from 'jwt-decode';
+import axios from 'axios';
 
 const Header = () => {
-    var signedin = localStorage.getItem('signedin');
-    var websiteName = "Some bank website?"
+    try {
+        axios.post('/auth/auth', { 
+            "token" : localStorage.getItem('Token'),
+        })
+        .then((result) => {
+        })
+        .catch((error) => {
+            localStorage.removeItem('Token');
+            window.location = "/home"
+        });
+        var token = localStorage.getItem('Token');
+        var decoded = jwt_decode(token);
+        var username = decoded.username;
+    } catch (error) {}
 
-    if(signedin){
+    var websiteName = "Southern Sierra Wildflower Club"
+
+    if(token){
         return (
             <Navbar bg="light" expand="lg">
                 <Navbar.Brand href="/">{websiteName}</Navbar.Brand>
                 <Navbar.Toggle aria-controls="basic-navbar-nav" />
                 <Navbar.Collapse id="basic-navbar-nav">
                     <Nav className="mr-auto">
-                    <Nav.Link href="/listflowers">List Flowers</Nav.Link>
-                    <Nav.Link href="/newsighting">New Sighting</Nav.Link>
-                    <Nav.Link href="/performance">Performance Test</Nav.Link>
+                    <Nav.Link href="/">Home</Nav.Link>
+                    <Nav.Link href="/dashboard">Dashboard</Nav.Link>
                     </Nav>
                 </Navbar.Collapse>
                 <Navbar.Collapse className="justify-content-end">
                     <Navbar.Text>
-                        Signed in as: <a href="/signout">Admin</a>
+                        Signed in as: <a href="/signout">{username}</a>
                     </Navbar.Text>
                 </Navbar.Collapse>
             </Navbar>

@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import './Home.css';
 import { MDBContainer, MDBRow, MDBCol } from 'mdbreact';
+import axios from 'axios';
+import { Link, withRouter } from "react-router-dom";
 
 class Login extends Component {
     constructor(){
@@ -25,52 +27,66 @@ class Login extends Component {
     }
 
     handleSubmit(e){
-        if(this.state.username === "admin" && this.state.password === "password"){
-            localStorage.setItem('signedin', true);
-            e.preventDefault()
-		    this.props.history.push('/listflowers');
-        }
+        axios.post('/auth/login', { 
+            "username" : this.state.username,
+            "password" : this.state.password,
+        })
+        .then((result) => {
+            console.log(result);
+            console.log(result.data.token);
+            localStorage.setItem('Token', result.data.token);
+            window.location = "/listflowers"
+        })
+        .catch((error) => {
+          if(error.response.status === 400) {
+            alert("Login Failure");
+          }
+          
+        });
+        e.preventDefault();
     }
 
     render(){
         return (
-            <MDBContainer>
-                <MDBRow>
-                    <MDBCol md="6">
-                    <form autoComplete="off">
-                        <br/>
-                        <p className="h4 text-center mb-4">Sign in</p>
-                            <label htmlFor="defaultFormLoginEmailEx" className="grey-text">
-                                Username
+            <div style={{minHeight: 725}}>
+                <MDBContainer>
+                    <MDBRow>
+                        <MDBCol md="6">
+                        <form autoComplete="off">
+                            <br/>
+                            <p className="h4 text-center mb-4">Sign in</p>
+                                <label htmlFor="defaultFormLoginEmailEx" className="grey-text">
+                                    Username
+                                </label>
+                            <input
+                                type="text"
+                                name="username"
+                                id="standard-required"
+                                className="form-control"
+                                onChange={this.handleInputChange}
+                                value={this.state.username}
+                            />
+                            <br />
+                            <label htmlFor="defaultFormLoginPasswordEx" className="grey-text">
+                            Password
                             </label>
-                        <input
-                            type="text"
-                            name="username"
-                            id="standard-required"
-                            className="form-control"
-                            onChange={this.handleInputChange}
-                            value={this.state.username}
-                        />
-                        <br />
-                        <label htmlFor="defaultFormLoginPasswordEx" className="grey-text">
-                        Password
-                        </label>
-                        <input
-                            label="Password"
-                            type="password"
-                            id="standard-required"
-                            name="password"
-                            className="form-control"
-                            onChange={this.handleInputChange}
-                            value={this.state.password}
-                        />
-                        <div className="text-center mt-4">
-                            <button color="indigo" type="submit" onClick={this.handleSubmit}>Login</button>
-                        </div>
-                    </form>
-                    </MDBCol>
-                </MDBRow>
-            </MDBContainer>
+                            <input
+                                label="Password"
+                                type="password"
+                                id="standard-required"
+                                name="password"
+                                className="form-control"
+                                onChange={this.handleInputChange}
+                                value={this.state.password}
+                            />
+                            <div className="text-center mt-4">
+                                <button color="indigo" type="submit" onClick={this.handleSubmit}>Login</button>
+                            </div>
+                        </form>
+                        </MDBCol>
+                    </MDBRow>
+                </MDBContainer>
+            </div>
         );
     }
     

@@ -17,7 +17,7 @@ const FooterPage = () => {
       </MDBContainer>
       <div className="footer-copyright text-center py-3">
         <MDBContainer fluid>
-            Website name
+        Southern Sierra Wildflower Club
         </MDBContainer>
       </div>
     </MDBFooter>
