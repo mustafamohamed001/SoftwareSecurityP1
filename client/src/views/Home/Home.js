@@ -18,9 +18,9 @@ class Home extends Component {
                 <MDBContainer>
                     <MDBRow>
                         <AwesomeSlider>
-                            <div data-src="/images/bank.jpg" />
-                            <div data-src="/images/moneybed.jpg" />
-                            <div data-src="/images/mrkrabs.jpg" />
+                            <div data-src="/images/f1.webp" />
+                            <div data-src="/images/f2.png" />
+                            <div data-src="/images/b1.jpg" />
                         </AwesomeSlider>
                     </MDBRow>
                 </MDBContainer>
