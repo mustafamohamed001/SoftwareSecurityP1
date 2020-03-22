@@ -12,6 +12,21 @@ exports.getUsers = (req,res) => {
     });
 }
 
+exports.search = (req, res) => {
+    const db = new sqlite3.Database(__dirname + '/database.db');
+    db.all('SELECT * FROM FLOWERS WHERE COMNAME = ?', [req.body.search], (err, rows) => {
+        if (!err) {
+            console.log(rows);
+            
+            res.status(200).send(rows);
+        }
+        else {
+            console.log(err);
+            res.status(400)
+        }
+    });
+}
+
 exports.getFlowers = (req, res) => {
     const db = new sqlite3.Database(__dirname + '/database.db');
     db.all('SELECT * FROM FLOWERS', (err, rows) => {
