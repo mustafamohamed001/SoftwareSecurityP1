@@ -5,6 +5,7 @@ import Card from 'react-bootstrap/Card'
 import Container from 'react-bootstrap/Container'
 import Row from 'react-bootstrap/Row'
 import axios from 'axios';
+import Button from 'react-bootstrap/Button'
 
 class Search extends Component {
     constructor(){
@@ -14,6 +15,7 @@ class Search extends Component {
             result: '',
         }
         this.handleInputChange = this.handleInputChange.bind(this);
+        this.handleSubmit = this.handleSubmit.bind(this);
 
     }
 
@@ -25,21 +27,21 @@ class Search extends Component {
         this.setState({
             [name]: value
         });
+        console.log(name, value);
+    }
 
+    handleSubmit = () => {
         axios.post('/api/search', {
             search: this.state.search,
         })
             .then((res, err) => {
                 this.setState({
-                    result: res.data
+                    result: res.data,
                 })
             })
             .catch((err) => {
-                
+                console.log(err);
             });
-
-        console.log(name, value);
-        
     }
 
     render(){
@@ -56,10 +58,11 @@ class Search extends Component {
                                 </div>
                                 <Card.Body>
                                     <Row>
-                                        <p>Search: <MDBInput label="Search" value={this.state.search} name="search" onChange={this.handleInputChange}/></p>
+                                        <p><MDBInput label="Search" value={this.state.search} name="search" onChange={this.handleInputChange}/></p>
+                                        <Button variant="primary" onClick={this.handleSubmit}>Search</Button>
                                     </Row>
                                     <div class="d-flex justify-content-center">
-                                        {/* <p>{this.state.result}</p> */}
+                                        <p>{this.state.result.comname}</p>
                                     </div>
                                 </Card.Body>
                             </Card.Body>

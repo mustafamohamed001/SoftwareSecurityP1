@@ -9,7 +9,6 @@ const PrivateRoute = ({ component: Component, ...rest }) => {
         "token" : localStorage.getItem('Token'),
     })
     .then((result) => {
-        console.log('pass');
     })
     .catch((error) => {
         console.log('fail');
