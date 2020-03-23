@@ -14,10 +14,7 @@ exports.getUsers = (req,res) => {
 
 exports.search = (req, res) => {
     const db = new sqlite3.Database(__dirname + '/database.db');
-    if(req.body.search == ''){
-        res.status(200).send([])
-    }
-    db.all('SELECT * FROM FLOWERS WHERE COMNAME LIKE ?', [req.body.search + '%'], (err, rows) => {
+    db.all('SELECT COMNAME FROM FLOWERS WHERE COMNAME LIKE ?', [req.body.search + '%'], (err, rows) => {
         if (!err) {
             console.log(rows);
             

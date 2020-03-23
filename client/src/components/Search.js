@@ -6,17 +6,17 @@ import Container from 'react-bootstrap/Container'
 import Row from 'react-bootstrap/Row'
 import axios from 'axios';
 import Button from 'react-bootstrap/Button'
+import Col from 'react-bootstrap/Col'
 
 class Search extends Component {
     constructor(){
         super();
         this.state = {
             search: '',
-            result: '',
+            result: [],
         }
         this.handleInputChange = this.handleInputChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
-
     }
 
     handleInputChange(event) {
@@ -31,21 +31,41 @@ class Search extends Component {
     }
 
     handleSubmit = () => {
-        axios.post('/api/search', {
-            search: this.state.search,
-        })
-            .then((res, err) => {
-                this.setState({
-                    result: res.data,
-                })
+        if(this.state.search !== ''){
+            axios.post('/api/search', {
+                search: this.state.search,
             })
-            .catch((err) => {
-                console.log(err);
-            });
+                .then((res, err) => {
+                    this.setState({
+                        result: res.data,
+                    })
+                })
+                .catch((err) => {
+                    console.log(err);
+                });
+        }  
     }
 
     render(){
         console.log(this.state.result);
+        
+        const showResults = this.state.result.map((element, index) => {
+            return(
+                <Container>
+                    <br/>
+                        <Card>
+                        <Card.Body>
+                            <Row>
+                                <Col>
+                                    <Card.Title>{element.COMNAME}</Card.Title>
+                                </Col>
+                            </Row>
+                        </Card.Body>
+                        </Card> 
+                    <br/>
+                </Container>
+             );
+        }) 
         
         return (
             <div style={{minHeight: 750}}>
@@ -62,7 +82,7 @@ class Search extends Component {
                                         <Button variant="primary" onClick={this.handleSubmit}>Search</Button>
                                     </Row>
                                     <div class="d-flex justify-content-center">
-                                        <p>{this.state.result.comname}</p>
+                                        {showResults}
                                     </div>
                                 </Card.Body>
                             </Card.Body>

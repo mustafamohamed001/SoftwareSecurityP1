@@ -36,7 +36,7 @@ const App = () => {
         <Route exact path="/signout" component={signout} />
         <PrivateRoute exact path="/newsighting" component={NewSighting}/>
         <PrivateRoute exact path="/performance" component={TestPerformance}/>
-        <PrivateRoute exact path="/search" component={Search}/>
+        <PrivateRoute exact path="/search/" component={Search}/>
 
         <Route component={NotFound}/>
       </Switch>
