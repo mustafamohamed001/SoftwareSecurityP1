@@ -47,8 +47,6 @@ class Search extends Component {
     }
 
     render(){
-        console.log(this.state.result);
-        
         const showResults = this.state.result.map((element, index) => {
             return(
                 <Container>
@@ -73,7 +71,7 @@ class Search extends Component {
                     <br/>
                         <Card>
                             <Card.Body>
-                                <div class="d-flex justify-content-center">
+                                <div className="d-flex justify-content-center">
                                     <Card.Title>Search</Card.Title>
                                 </div>
                                 <Card.Body>
@@ -81,7 +79,7 @@ class Search extends Component {
                                         <p><MDBInput label="Search" value={this.state.search} name="search" onChange={this.handleInputChange}/></p>
                                         <Button variant="primary" onClick={this.handleSubmit}>Search</Button>
                                     </Row>
-                                    <div class="d-flex justify-content-center">
+                                    <div className="d-flex justify-content-center">
                                         {showResults}
                                     </div>
                                 </Card.Body>
