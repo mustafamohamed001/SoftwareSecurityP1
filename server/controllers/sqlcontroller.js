@@ -1,4 +1,6 @@
 const sqlite3 = require('sqlite3').verbose();
+var jwt = require('jsonwebtoken');
+var settings = require('../config/config');
 
 exports.getUsers = (req,res) => {
     const db = new sqlite3.Database(__dirname + '/database.db');
@@ -63,17 +65,17 @@ exports.flowersUpdate = (req, res) => {
 
     const db = new sqlite3.Database(__dirname + '/database.db');
     //name
-    const SQLUpdateName = 'UPDATE FLOWERS SET COMNAME = ' + newName + ' WHERE FLOWERS.COMNAME = ' + oldName;
-    const SQLUpdateSightings = 'UPDATE SIGHTINGS SET NAME = ' + newName + ' WHERE SIGHTINGS.NAME = ' + oldName;
-    const SQLUpdateGenus = 'UPDATE FLOWERS SET GENUS = ' + newGenus + ' WHERE FLOWERS.GENUS = ' + oldgenus;
-    const SQLUpdateSpecies = 'UPDATE FLOWERS SET SPECIES = ' + newSpecies + ' WHERE FLOWERS.SPECIES = ' + oldspecies;
-    db.all(SQLUpdateName, (err, rows) => {
+    const SQLUpdateName = 'UPDATE FLOWERS SET COMNAME = ? WHERE FLOWERS.COMNAME = ?';
+    const SQLUpdateSightings = 'UPDATE SIGHTINGS SET NAME = ? WHERE SIGHTINGS.NAME = ?';
+    const SQLUpdateGenus = 'UPDATE FLOWERS SET GENUS = ? WHERE FLOWERS.GENUS = ?';
+    const SQLUpdateSpecies = 'UPDATE FLOWERS SET SPECIES = ? WHERE FLOWERS.SPECIES = ?';
+    db.all(SQLUpdateName, [newName, oldName], (err, rows) => {
         if (!err) {
-            db.all(SQLUpdateSightings, (err, rows) => {
+            db.all(SQLUpdateSightings, [newName, oldName], (err, rows) => {
                 if (!err) {
-                    db.all(SQLUpdateGenus, (err, rows) => {
+                    db.all(SQLUpdateGenus, [newGenus, oldgenus], (err, rows) => {
                         if (!err) {
-                            db.all(SQLUpdateSpecies, (err, rows) => {
+                            db.all(SQLUpdateSpecies, [newSpecies, oldspecies], (err, rows) => {
                                 if (!err) {
                                    // console.log("G");
                                     console.log('Name has been changed!\nGenus has been changed!\nSpecies has been changed!\n');
@@ -103,22 +105,49 @@ exports.flowersUpdate = (req, res) => {
 }
 
 exports.sightingsInsert = (req, res) => {
-    const name = "'" + req.body.name + "'";
-    const person = "'" + req.body.person + "'";
-    const location = "'" + req.body.location + "'";
-    const date = "'" + req.body.date + "'";
+    const name = req.body.name;
+    const location = req.body.location;
+    const date = req.body.date;
 
-    const SQLInsertSighting = 'INSERT INTO SIGHTINGS (NAME, PERSON, LOCATION, SIGHTED) VALUES (' + name + ', ' + person + ', ' + location + ', ' + date + ')';
-    const db = new sqlite3.Database(__dirname + '/database.db');
-    db.all(SQLInsertSighting, (err, rows) => {
-        if (!err) {
-            console.log('Sighting has been inserted!')
-            res.send('Sighting has been inserted!')
+    var token = req.body.token;
+    if(token){
+        token = token.substring(4,token.length)
+        jwt.verify(token, settings.secret, function(err, decoded) {
+        if (err) {
+            /*
+            err = {
+                name: 'TokenExpiredError',
+                message: 'jwt expired',
+                expiredAt: 1408621000
+            }
+            */
+        console.log(err);
+        
+        res.status(400).send({success: false, msg: 'Authentication failed'});
         }
-        else {
-            console.log(err);
+        else{
+            var decoded = jwt.decode(token);
+            var person = decoded.username
+            const SQLInsertSighting = 'INSERT INTO SIGHTINGS (NAME, PERSON, LOCATION, SIGHTED) VALUES (?, ?, ?, ?)';
+            const db = new sqlite3.Database(__dirname + '/database.db');
+            db.all(SQLInsertSighting, [name, person, location, date], (err, rows) => {
+                if (!err) {
+                    console.log('Sighting has been inserted!')
+                    res.status(200).send('Sighting has been inserted!')
+                }
+                else {
+                    console.log(err);
+                    res.status(400)
+                }
+            });
         }
-    });
+        });
+    }
+    else{
+        res.status(400).send({success: false, msg: 'Authentication failed'});
+    }
+
+    
 }
 
 exports.flowersDelete = (req, res) => {

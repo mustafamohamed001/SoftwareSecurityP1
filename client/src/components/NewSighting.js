@@ -12,7 +12,6 @@ class NewSighting extends Component {
         this.state = {
             flowers: [],
             flowername: '',
-            personname: '',
             location: '',
             dateofsighting: '',
         }
@@ -32,22 +31,31 @@ class NewSighting extends Component {
         console.log(name, value);
     }
 
-    handleSubmit = () => {
-        axios.post('/api/sightingsInsert', {
-            name: this.state.flowername,
-            person: this.state.personname,
-            location: this.state.location,
-            date: this.state.dateofsighting,
-        })
-            .then((res, err) => {
-                if (!err) {
-                    console.log(res);
-                    window.location.reload(false);
-                }
+    handleSubmit = (e) => {
+        var regex = /^[12][09][0-9][0-9]-[01][0-9]-[0-3][0-9]$/
+        if (!(regex.test(this.state.dateofsighting))){
+            alert("Date Format incorrect");
+            e.preventDefault()
+        }
+        else{
+            axios.post('/api/sightingsInsert', {
+                name: this.state.flowername,
+                location: this.state.location,
+                date: this.state.dateofsighting,
+                token: localStorage.getItem('Token'),
             })
-            .catch((err) => {
-                console.log(err);
-            });
+                .then((res, err) => {
+                    if (!err) {
+                        console.log(res);
+                        window.location.reload(false);
+                    }
+                })
+                .catch((err) => {
+                    alert("Post Fail")
+                    console.log(err);
+                });
+        }
+        
     }
     
 
@@ -88,9 +96,8 @@ class NewSighting extends Component {
                                     <Card.Body>
                                         <Row>
                                                 <p>Flower Name: <MDBInput label="Flower Name" value={this.state.flowername} name="flowername" onChange={this.handleInputChange}/></p>
-                                                <p>Your Name: <MDBInput label="Your Name" value={this.state.personname} name="personname" onChange={this.handleInputChange}/></p>
                                                 <p>Location: <MDBInput label="Location" value={this.state.location} name="location" onChange={this.handleInputChange}/></p>
-                                                <p>Date of Sighting: <MDBInput label="Date of Sighting" value={this.state.dateofsighting} name="dateofsighting" onChange={this.handleInputChange}/></p>                                           
+                                                <p>Date of Sighting (YYYY-MM-DD): <MDBInput label="Date of Sighting" value={this.state.dateofsighting} name="dateofsighting" onChange={this.handleInputChange}/></p>                                           
                                         </Row>
                                         <div class="d-flex justify-content-center">
                                             <Button variant="primary" onClick={this.handleSubmit}>Finish</Button>
