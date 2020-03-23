@@ -53,6 +53,63 @@ exports.getSightings = (req, res) => {
     });
 }
 
+exports.getComments = (req, res) => {
+    const db = new sqlite3.Database(__dirname + '/database.db');
+    db.all('SELECT * FROM COMMENTS', (err, rows) => {
+        if (!err) {
+            console.log(rows)
+            res.send(rows);
+        }
+        else {
+            console.log(err);
+        }
+    });
+}
+
+exports.postComments = (req, res) => {
+    const flower = req.body.flower;
+    const comments = req.body.comments;
+    const links = req.body.links;
+
+    var token = req.body.token;
+    if(token){
+        token = token.substring(4,token.length)
+        jwt.verify(token, settings.secret, function(err, decoded) {
+        if (err) {
+            /*
+            err = {
+                name: 'TokenExpiredError',
+                message: 'jwt expired',
+                expiredAt: 1408621000
+            }
+            */
+        console.log(err);
+        
+        res.status(400).send({success: false, msg: 'Authentication failed'});
+        }
+        else{
+            var decoded = jwt.decode(token);
+            var person = decoded.username
+            const SQLInsertSighting = 'INSERT INTO COMMENTS (flower, username, comments, links) VALUES (?, ?, ?, ?)';
+            const db = new sqlite3.Database(__dirname + '/database.db');
+            db.all(SQLInsertSighting, [flower, person, comments, lnks], (err, rows) => {
+                if (!err) {
+                    console.log('Comment has been inserted!')
+                    res.status(200).send('Comment has been inserted!')
+                }
+                else {
+                    console.log(err);
+                    res.status(400)
+                }
+            });
+        }
+        });
+    }
+    else{
+        res.status(400).send({success: false, msg: 'Authentication failed'});
+    }
+}
+
 exports.flowersUpdate = (req, res) => {
     const oldName = "'" + req.body.oldcomname + "'";
     const newName = "'" + req.body.comname + "'";
