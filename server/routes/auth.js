@@ -102,9 +102,12 @@ router.post('/auth', function(req, res) {
        res.status(400).send({success: false, msg: 'Authentication failed'});
       }
       else{
-        res.status(200).json({success: true, msg: 'Autheticated'});
+        res.status(200).json({success: true, msg: 'Authenticated'});
       }
     });
+  }
+  else{
+    res.status(400).send({success: false, msg: 'Authentication failed'});
   }
 });
 

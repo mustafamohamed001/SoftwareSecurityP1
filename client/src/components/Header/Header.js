@@ -13,8 +13,10 @@ const Header = () => {
         .then((result) => {
         })
         .catch((error) => {
-            localStorage.removeItem('Token');
-            window.location = "/home"
+            if(localStorage.getItem('Token')){
+                localStorage.removeItem('Token');
+                window.location = "/home"
+            }         
         });
         var token = localStorage.getItem('Token');
         var decoded = jwt_decode(token);
