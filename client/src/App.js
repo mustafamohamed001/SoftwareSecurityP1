@@ -15,6 +15,7 @@ import TestPerformance from "./components/TestPerformance"
 import Search from "./components/Search"
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'mdbreact/dist/css/mdb.css';
+import Admin from "./views/Admin/Admin"
 
 import PrivateRoute from './PrivateRoute'
 
@@ -37,6 +38,7 @@ const App = () => {
         <PrivateRoute exact path="/newsighting" component={NewSighting}/>
         <PrivateRoute exact path="/performance" component={TestPerformance}/>
         <PrivateRoute exact path="/search/" component={Search}/>
+        <PrivateRoute exact path="/admin/" component={Admin}/>
 
         <Route component={NotFound}/>
       </Switch>
