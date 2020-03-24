@@ -18,41 +18,18 @@ exports.getUsers = (req,res) => {
 
 exports.getUserinfo = (req, res) => {
 
-    var token = req.body.token;
+    const db = new sqlite3.Database(__dirname + '/database.db');
 
-    if(token){
-        token = token.substring(4,token.length)
-        jwt.verify(token, settings.secret, function(err, decoded) {
-        if (err) {
-
-        	console.log(err);
-        	res.status(400).send({success: false, msg: 'Authentication failed'});
+    db.all('SELECT USERNAME FROM USERS', (err, rows) => {
+        if(!err){
+            res.status(200).send(rows);
         }
         else{
-            var decoded = jwt.decode(token);
-            var person = decoded.username;
-            const db = new sqlite3.Database(__dirname + '/database.db');
-            if(person == 'admin') {
-
-				db.all('SELECT USERNAME FROM USERS', (err, rows) => {
-					if(!err){
-						res.status(200).send(rows);
-					}
-					else{
-						res.sendStatus(404);
-					}
-				});
-
-			}
-			else {
-				res.status(400).send({success: false, msg: 'Authentication failed'});
-			}
+            res.sendStatus(404);
         }
-        });
-    }
-    else{
-        res.status(400).send({success: false, msg: 'Authentication failed'});
-    }
+    });
+
+    
 }
 
 exports.search = (req, res) => {
@@ -108,50 +85,26 @@ exports.getComments = (req, res) => {
 
 exports.postComments = (req, res) => {
 
-    const flower = req.body.flower;
-    var comments = req.body.comments;
-    var links = req.body.links;
+    const flower = '\"' + req.body.flower + '\"';
+    var comments = '\"' + req.body.comments + '\"';
+    var links = '\"' + req.body.links + '\"';
+    var person = '\"' + req.body.username + '\"';
     if (!links){
         links = '';
     }
 
-    var token = req.body.token;
-    if(token){
-        token = token.substring(4,token.length)
-        jwt.verify(token, settings.secret, function(err, decoded) {
-        if (err) {
-            /*
-            err = {
-                name: 'TokenExpiredError',
-                message: 'jwt expired',
-                expiredAt: 1408621000
-            }
-            */
-        console.log(err);
-        
-        res.status(400).send({success: false, msg: 'Authentication failed'});
+    const SQLInsertSighting = 'INSERT INTO COMMENTS (flower, username, comments, links) VALUES (' + flower + ' , ' + person + ', '+ comments + ', ' + links + ')';
+    const db = new sqlite3.Database(__dirname + '/database.db');
+    db.all(SQLInsertSighting, [], (err, rows) => {
+        if (!err) {
+            console.log('Comment has been inserted!')
+            res.status(200).send('Comment has been inserted!')
         }
-        else{
-            var decoded = jwt.decode(token);
-            var person = decoded.username
-            const SQLInsertSighting = 'INSERT INTO COMMENTS (flower, username, comments, links) VALUES (?, ?, ?, ?)';
-            const db = new sqlite3.Database(__dirname + '/database.db');
-            db.all(SQLInsertSighting, [flower, person, comments, links], (err, rows) => {
-                if (!err) {
-                    console.log('Comment has been inserted!')
-                    res.status(200).send('Comment has been inserted!')
-                }
-                else {
-                    console.log(err);
-                    res.status(400)
-                }
-            });
+        else {
+            console.log(err);
+            res.status(400)
         }
-        });
-    }
-    else{
-        res.status(400).send({success: false, msg: 'Authentication failed'});
-    }
+    });
 }
 
 exports.flowersUpdate = (req, res) => {
@@ -206,47 +159,23 @@ exports.flowersUpdate = (req, res) => {
 }
 
 exports.sightingsInsert = (req, res) => {
-    const name = req.body.name;
-    const location = req.body.location;
-    const date = req.body.date;
+    const name = '\"' + req.body.name + '\"';
+    const location = '\"' + req.body.location + '\"';
+    const date = '\"' + req.body.date + '\"';
+    var person = '\"' + req.body.username + '\"';
 
-    var token = req.body.token;
-    if(token){
-        token = token.substring(4,token.length)
-        jwt.verify(token, settings.secret, function(err, decoded) {
-        if (err) {
-            /*
-            err = {
-                name: 'TokenExpiredError',
-                message: 'jwt expired',
-                expiredAt: 1408621000
-            }
-            */
-        console.log(err);
-        
-        res.status(400).send({success: false, msg: 'Authentication failed'});
+    const SQLInsertSighting = 'INSERT INTO SIGHTINGS (NAME, PERSON, LOCATION, SIGHTED) VALUES (' + name + ', ' + person + ', ' + location + ', ' + date + ')';
+    const db = new sqlite3.Database(__dirname + '/database.db');
+    db.all(SQLInsertSighting, [], (err, rows) => {
+        if (!err) {
+            console.log('Sighting has been inserted!')
+            res.status(200).send('Sighting has been inserted!')
         }
-        else{
-            var decoded = jwt.decode(token);
-            var person = decoded.username
-            const SQLInsertSighting = 'INSERT INTO SIGHTINGS (NAME, PERSON, LOCATION, SIGHTED) VALUES (?, ?, ?, ?)';
-            const db = new sqlite3.Database(__dirname + '/database.db');
-            db.all(SQLInsertSighting, [name, person, location, date], (err, rows) => {
-                if (!err) {
-                    console.log('Sighting has been inserted!')
-                    res.status(200).send('Sighting has been inserted!')
-                }
-                else {
-                    console.log(err);
-                    res.status(400)
-                }
-            });
+        else {
+            console.log(err);
+            res.status(400)
         }
-        });
-    }
-    else{
-        res.status(400).send({success: false, msg: 'Authentication failed'});
-    }
+    });
 
     
 }

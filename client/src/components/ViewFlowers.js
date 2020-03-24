@@ -147,7 +147,7 @@ class Login extends Component {
     }
     handleComment = (flower) => {
         axios.post('/api/postcomments', {
-            token: localStorage.getItem('Token'),
+            username: localStorage.getItem('Token'),
             comments: this.state.postcomment,
             links: this.state.postlink,
             flower: flower

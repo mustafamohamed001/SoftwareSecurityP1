@@ -7,20 +7,8 @@ import axios from 'axios';
 
 const Header = () => {
     try {
-        axios.post('/auth/auth', { 
-            "token" : localStorage.getItem('Token'),
-        })
-        .then((result) => {
-        })
-        .catch((error) => {
-            if(localStorage.getItem('Token')){
-                localStorage.removeItem('Token');
-                window.location = "/home"
-            }         
-        });
-        var token = localStorage.getItem('Token');
-        var decoded = jwt_decode(token);
-        var username = decoded.username;
+        var username = localStorage.getItem('Token');
+        var token = username
     } catch (error) {}
 
     var websiteName = "Southern Sierra Wildflower Club"
