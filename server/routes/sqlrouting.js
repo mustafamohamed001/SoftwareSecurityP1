@@ -2,7 +2,7 @@ const sqlitecontroller = require('../controllers/sqlcontroller.js');
     express = require('express'), 
     router = express.Router()
 
-    router.route('/getusers').get(sqlitecontroller.getUsers);
+    router.route('/getusers').post(sqlitecontroller.getUsers);
 
     router.route('/getFlowers').post(sqlitecontroller.getFlowers);
     router.route('/search').post(sqlitecontroller.search)

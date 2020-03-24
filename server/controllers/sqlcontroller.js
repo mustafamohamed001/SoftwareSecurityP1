@@ -14,6 +14,56 @@ exports.getUsers = (req,res) => {
     });
 }
 
+
+exports.getUserinfo = (req, res) => {
+
+    var token = req.body.token;
+
+    if(token){
+        token = token.substring(4,token.length)
+        jwt.verify(token, settings.secret, function(err, decoded) {
+        if (err) {
+
+        	console.log(err);
+        	res.status(400).send({success: false, msg: 'Authentication failed'});
+        }
+        else{
+            var decoded = jwt.decode(token);
+            var person = decoded.username;
+            const db = new sqlite3.Database(__dirname + '/database.db');
+            if(person == 'admin') {
+
+				db.all('SELECT USERNAME FROM USERS', (err, rows) => {
+					if(!err){
+						res.status(200).send(rows);
+					}
+					else{
+						res.sendStatus(404);
+					}
+				});
+
+			}
+			else {
+				res.status(400).send({success: false, msg: 'Authentication failed'});
+			}
+
+        }
+        });
+    }
+    else{
+        res.status(400).send({success: false, msg: 'Authentication failed'});
+    }
+
+    
+}
+
+
+
+
+
+
+
+
 exports.search = (req, res) => {
     const db = new sqlite3.Database(__dirname + '/database.db');
     db.all('SELECT COMNAME FROM FLOWERS WHERE COMNAME LIKE ?', [req.body.search + '%'], (err, rows) => {

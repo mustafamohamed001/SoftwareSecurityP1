@@ -7,10 +7,28 @@ class Admin extends Component {
     constructor(){
         super();
         this.handleInputChange = this.handleInputChange.bind(this);
+        this.handleSubmit = this.handleSubmit.bind(this);
         this.state = {
-            username: '',
-            emailaddress: ''
+            result: [],
         }
+    }
+
+    handleSubmit = () => {
+        axios.post('/api/getusers')
+        .then((res, err) => {
+
+        	var tempusers = [];
+        	for (var j = 0; j < res.data.length; j++){
+            	tempusers.push(res.data[j]);
+			}
+			this.setState({
+                result: tempusers,
+            })
+			
+        })
+        .catch((err) => {
+        	console.log(err);
+        });
     }
 
     handleInputChange(event) {
@@ -25,68 +43,24 @@ class Admin extends Component {
     }
 
     render(){
+
+        const showResults = this.state.result.map((element, index) => {
+            return(
+                <div>
+                    {element.USERNAME}
+                </div>
+ 
+
+             );
+        }) 
+
+
         return (
             <div style={{minHeight: 725}}>
             <MDBContainer>
                 <MDBRow>
                     <MDBCol md="6">
-                    <form autoComplete="off">
-                        <br/>
-                        <p className="h4 text-center mb-4">Sign Up</p>
-                            <label htmlFor="defaultFormLoginEmailEx" className="grey-text">
-                                Username
-                            </label>
-                        <input
-                            type="text"
-                            name="username"
-                            id="standard-required"
-                            className="form-control"
-                            onChange={this.handleInputChange}
-                            value={this.state.username}
-                        />
-                        <br/>
-                            <label htmlFor="defaultFormLoginPasswordEx" className="grey-text">
-                                Email Address
-                            </label>
-                        <input
-                            type="text"
-                            id="standard-required"
-                            name="emailaddress"
-                            className="form-control"
-                            onChange={this.handleInputChange}
-                            value={this.state.emailaddress}
-                        />
-                        <br />
-                            <label htmlFor="defaultFormLoginPasswordEx" className="grey-text">
-                                Password
-                            </label>
-                        <input
-                            label="Password"
-                            type="password"
-                            id="standard-required"
-                            name="password"
-                            className="form-control"
-                            onChange={this.handleInputChange}
-                            value={this.state.password}
-                        />
-                                                <br />
-                            <label htmlFor="defaultFormLoginPasswordEx" className="grey-text">
-                                Retype Password
-                            </label>
-                        <input
-                            label="Password"
-                            type="password"
-                            id="standard-required"
-                            name="retypepassword"
-                            className="form-control"
-                            onChange={this.handleInputChange}
-                            value={this.state.retypepassword}
-                        />
-
-                        <div className="text-center mt-4">
-                            <button color="indigo" type="submit" onClick={this.handleSubmit}>Register</button>
-                        </div>
-                    </form>
+                        {showResults}
                     </MDBCol>
                 </MDBRow>
             </MDBContainer>
