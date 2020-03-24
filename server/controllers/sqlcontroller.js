@@ -67,9 +67,14 @@ exports.getComments = (req, res) => {
 }
 
 exports.postComments = (req, res) => {
+    console.log(res.body);
+    
     const flower = req.body.flower;
-    const comments = req.body.comments;
-    const links = req.body.links;
+    var comments = req.body.comments;
+    var links = req.body.links;
+    if (!links){
+        links = '';
+    }
 
     var token = req.body.token;
     if(token){
@@ -92,7 +97,7 @@ exports.postComments = (req, res) => {
             var person = decoded.username
             const SQLInsertSighting = 'INSERT INTO COMMENTS (flower, username, comments, links) VALUES (?, ?, ?, ?)';
             const db = new sqlite3.Database(__dirname + '/database.db');
-            db.all(SQLInsertSighting, [flower, person, comments, lnks], (err, rows) => {
+            db.all(SQLInsertSighting, [flower, person, comments, links], (err, rows) => {
                 if (!err) {
                     console.log('Comment has been inserted!')
                     res.status(200).send('Comment has been inserted!')
