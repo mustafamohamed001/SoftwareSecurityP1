@@ -72,7 +72,7 @@ class Search extends Component {
                         <Card>
                             <Card.Body>
                                 <div className="d-flex justify-content-center">
-                                    <Card.Title>Search</Card.Title>
+                                    <Card.Title>Search Flowers</Card.Title>
                                 </div>
                                 <Card.Body>
                                     <Row>
