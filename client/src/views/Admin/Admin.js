@@ -2,6 +2,14 @@ import React, { Component } from 'react';
 import './Home.css';
 import { MDBContainer, MDBRow, MDBCol } from 'mdbreact';
 import axios from 'axios';
+import jwt_decode from 'jwt-decode';
+import { Route, Redirect } from 'react-router-dom';
+import Card from 'react-bootstrap/Card'
+import Col from 'react-bootstrap/Col'
+import Row from 'react-bootstrap/Row'
+import Container from 'react-bootstrap/Container'
+
+
 
 class Admin extends Component {
     constructor(){
@@ -40,32 +48,66 @@ class Admin extends Component {
             [name]: value
         });
         console.log(name, value);
-    }
+	}
+	
+
+
+	componentDidMount() { window.addEventListener('load', this.handleSubmit)}
+
+    componentWillUnmount() { window.removeEventListener('load', this.handleInputChange)}
 
     render(){
 
         const showResults = this.state.result.map((element, index) => {
             return(
-                <div>
-                    {element.USERNAME}
-                </div>
- 
-
+                <Container>
+                    <br/>
+                        <Card>
+                        <Card.Body>
+                            <Row>
+                                <Col>
+                                    <Card.Title>{element.USERNAME}</Card.Title>
+                                </Col>
+                            </Row>
+                        </Card.Body>
+                        </Card> 
+                    <br/>
+                </Container>
              );
         }) 
 
+        var token = localStorage.getItem('Token');
+        var decoded = jwt_decode(token);
+        var username = decoded.username;
 
-        return (
-            <div style={{minHeight: 725}}>
-            <MDBContainer>
-                <MDBRow>
-                    <MDBCol md="6">
-                        {showResults}
-                    </MDBCol>
-                </MDBRow>
-            </MDBContainer>
-            </div>
-        );
+		if(username == 'admin') {
+			return (
+				<div style={{minHeight: 725}}>
+				<Card>
+				<MDBContainer>
+
+		REGISTERED USERS:
+					<MDBRow>
+						<MDBCol md="6">
+							<row>
+                                 {showResults}
+							</row>
+						</MDBCol>
+					</MDBRow>
+				</MDBContainer>
+				</Card>
+
+				</div>
+			);			
+		}
+		else {
+			return(
+				<Redirect to={{
+                    pathname: '/dashboard',
+                  }} />
+			)
+		}
+
     }
     
 }
