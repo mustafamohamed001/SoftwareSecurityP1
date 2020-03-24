@@ -76,10 +76,6 @@ class Admin extends Component {
              );
         }) 
 
-        var token = localStorage.getItem('Token');
-        var decoded = jwt_decode(token);
-        var username = decoded.username;
-
 			return (
 				<div style={{minHeight: 725}}>
 				<Card>
