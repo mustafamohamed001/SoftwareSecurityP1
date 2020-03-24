@@ -57,7 +57,7 @@ exports.getUserinfo = (req, res) => {
 
 exports.search = (req, res) => {
     const db = new sqlite3.Database(__dirname + '/database.db');
-    db.all('SELECT COMNAME FROM FLOWERS WHERE COMNAME LIKE ?', [req.body.search + '%'], (err, rows) => {
+    db.all('SELECT COMNAME FROM FLOWERS WHERE COMNAME="'+req.body.search+'"', [], (err, rows) => {
         if (!err) {
             console.log(rows);
             
@@ -108,32 +108,11 @@ exports.getComments = (req, res) => {
 
 exports.postComments = (req, res) => {
 
-    const stringIsAValidUrl = (s) => {
-        try {
-          new URL(s);
-          return true;
-        } catch (err) {
-          return false;
-        }
-      };
-    
     const flower = req.body.flower;
     var comments = req.body.comments;
     var links = req.body.links;
     if (!links){
         links = '';
-    }
-    links = links.toLowerCase()
-    if(!stringIsAValidUrl(links)){
-        res.status(400).send({success: false, msg: 'Invalid Link'});
-        return
-    }
-    else{
-        links = links.replace("javascript:", "")
-        if(!stringIsAValidUrl(links)){
-            res.status(400).send({success: false, msg: 'Invalid Link'});
-            return
-        }
     }
 
     var token = req.body.token;
