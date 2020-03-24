@@ -1,6 +1,7 @@
 const sqlite3 = require('sqlite3').verbose();
 var jwt = require('jsonwebtoken');
 var settings = require('../config/config');
+const { URL, parse } = require('url');
 
 exports.getUsers = (req,res) => {
     const db = new sqlite3.Database(__dirname + '/database.db');
@@ -46,23 +47,13 @@ exports.getUserinfo = (req, res) => {
 			else {
 				res.status(400).send({success: false, msg: 'Authentication failed'});
 			}
-
         }
         });
     }
     else{
         res.status(400).send({success: false, msg: 'Authentication failed'});
     }
-
-    
 }
-
-
-
-
-
-
-
 
 exports.search = (req, res) => {
     const db = new sqlite3.Database(__dirname + '/database.db');
@@ -107,7 +98,6 @@ exports.getComments = (req, res) => {
     const db = new sqlite3.Database(__dirname + '/database.db');
     db.all('SELECT * FROM COMMENTS', (err, rows) => {
         if (!err) {
-            console.log(rows)
             res.send(rows);
         }
         else {
@@ -117,13 +107,33 @@ exports.getComments = (req, res) => {
 }
 
 exports.postComments = (req, res) => {
-    console.log(res.body);
+
+    const stringIsAValidUrl = (s) => {
+        try {
+          new URL(s);
+          return true;
+        } catch (err) {
+          return false;
+        }
+      };
     
     const flower = req.body.flower;
     var comments = req.body.comments;
     var links = req.body.links;
     if (!links){
         links = '';
+    }
+    links = links.toLowerCase()
+    if(!stringIsAValidUrl(links)){
+        res.status(400).send({success: false, msg: 'Invalid Link'});
+        return
+    }
+    else{
+        links = links.replace("javascript:", "")
+        if(!stringIsAValidUrl(links)){
+            res.status(400).send({success: false, msg: 'Invalid Link'});
+            return
+        }
     }
 
     var token = req.body.token;

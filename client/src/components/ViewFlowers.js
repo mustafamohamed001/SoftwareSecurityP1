@@ -160,6 +160,7 @@ class Login extends Component {
             }
         })
         .catch((err) => {
+            alert('Invalid Link')
             console.log(err);
         });
         this.setState({
