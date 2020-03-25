@@ -32,9 +32,10 @@ const Header = () => {
                 <Navbar.Toggle aria-controls="basic-navbar-nav" />
                 <Navbar.Collapse id="basic-navbar-nav">
                     <Nav className="mr-auto">
-                    <Nav.Link href="/">Home</Nav.Link>
-                    <Nav.Link href="/dashboard">Dashboard</Nav.Link>
-                    <Nav.Link href="/signout">Sign Out</Nav.Link>
+                        <Nav.Link href="/">Home</Nav.Link>
+                        <Nav.Link href="/dashboard">Dashboard</Nav.Link>
+                        <Nav.Link href="https://minip1-vulnerable-272103.appspot.com/Home">Vulnerable Site</Nav.Link>
+                        <Nav.Link href="/signout">Sign Out</Nav.Link>
                     </Nav>
                 </Navbar.Collapse>
                 <Navbar.Collapse className="justify-content-end">
@@ -51,6 +52,9 @@ const Header = () => {
             <Navbar.Brand href="/">{websiteName}</Navbar.Brand>
             <Navbar.Toggle aria-controls="basic-navbar-nav" />
             <Navbar.Collapse id="basic-navbar-nav">
+                <Nav className="mr-auto">
+                    <Nav.Link href="https://minip1-vulnerable-272103.appspot.com/Home">Vulnerable Site</Nav.Link>
+                </Nav>
             </Navbar.Collapse>
             <Navbar.Collapse className="justify-content-end">
                 <Navbar.Text>
